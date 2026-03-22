@@ -5,12 +5,9 @@
   import { currentUser } from "$lib/stores/user";
   import { goto } from "$app/navigation";
   import type { ApplicationStatus } from "$lib/stores/applications";
+  import { browser } from "$app/environment";
 
-  $: {
-    if (!$currentUser) {
-      goto("/login");
-    }
-  }
+  $: if (browser && !$currentUser) goto("/login");
 
   function isNotNull<T>(value: T | null): value is T {
     return value !== null;
@@ -23,10 +20,7 @@
 
       const company = $companies.find((c) => c.id === job.companyId);
 
-      if (
-        !company ||
-        (company.ownerId && company.ownerId !== $currentUser?.id)
-      ) {
+      if (!job || job.ownerId !== $currentUser?.id) {
         return null;
       }
 
@@ -43,9 +37,7 @@
     const job = $jobs.find((j) => j.id === jobId);
     if (!job) return;
 
-    const company = $companies.find((c) => c.id === job.companyId);
-
-    if (!company || company.ownerId !== $currentUser?.id) {
+    if (job.ownerId !== $currentUser?.id) {
       return;
     }
 
