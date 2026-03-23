@@ -1,18 +1,9 @@
 <script lang="ts">
   import favicon from "$lib/assets/icon.svg";
-  import { page } from "$app/state";
+  import { currentUser } from "$lib/stores/user";
   import "../app.css";
 
   let { children } = $props();
-
-  const links = [
-    { href: "/", label: "Home" },
-    { href: "/jobs", label: "Job Offers" },
-    { href: "/applications", label: "My Applications" },
-    { href: "/companies", label: "Companies" },
-    { href: "/hr", label: "HR Panel" },
-    { href: "/login", label: "Login" },
-  ];
 </script>
 
 <svelte:head>
@@ -24,16 +15,23 @@
     <div class="logo"><a href="/">JOB MARKETPLACE</a></div>
 
     <div class="nav-links">
-      {#each links as link}
-        <a
-          href={link.href}
-          class:active={link.href === "/"
-            ? page.url.pathname === "/"
-            : page.url.pathname.startsWith(link.href)}
-        >
-          {link.label}
-        </a>
-      {/each}
+      <a href="/">Home</a>
+      <a href="/jobs">Job Offers</a>
+
+      {#if $currentUser}
+        <a href="/applications">My Applications</a>
+        <a href="/companies">Companies</a>
+        <a href="/hr">HR Panel</a>
+      {/if}
+
+      {#if $currentUser}
+        <span class="login">{$currentUser.email}</span>
+        <button class="logout" on:click={() => currentUser.set(null)}>
+          Logout
+        </button>
+      {:else}
+        <a href="/login">Login</a>
+      {/if}
     </div>
   </nav>
 

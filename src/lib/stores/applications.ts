@@ -11,6 +11,7 @@ export interface Application {
   jobId: number;
   appliedAt: number;
   status: ApplicationStatus;
+  userId: string;
 }
 
 let initial: Application[] = [];
