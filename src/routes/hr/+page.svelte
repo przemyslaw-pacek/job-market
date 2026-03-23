@@ -3,11 +3,7 @@
   import { jobs } from "$lib/stores/jobs";
   import { companies } from "$lib/stores/companies";
   import { currentUser } from "$lib/stores/user";
-  import { goto } from "$app/navigation";
   import type { ApplicationStatus } from "$lib/stores/applications";
-  import { browser } from "$app/environment";
-
-  $: if (browser && !$currentUser) goto("/login");
 
   function isNotNull<T>(value: T | null): value is T {
     return value !== null;
@@ -52,7 +48,10 @@
 <div class="container">
   <h2>HR Panel</h2>
 
-  {#if detailedApplications.length === 0}
+  {#if !$currentUser}
+    <p>You must be logged in to see applications.</p>
+    <a href="/login" class="button">Go to Login</a>
+  {:else if detailedApplications.length === 0}
     <p>No applications yet.</p>
   {:else}
     {#each detailedApplications as app}

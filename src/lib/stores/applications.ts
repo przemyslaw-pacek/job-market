@@ -1,4 +1,5 @@
 import { writable } from "svelte/store";
+import { browser } from "$app/environment";
 
 export type ApplicationStatus =
   | "pending"
@@ -11,17 +12,18 @@ export interface Application {
   appliedAt: number;
   status: ApplicationStatus;
 }
-const stored =
-  typeof localStorage !== "undefined"
-    ? localStorage.getItem("applications")
-    : null;
 
-const initial: Application[] = stored ? JSON.parse(stored) : [];
+let initial: Application[] = [];
+
+if (browser) {
+  const stored = localStorage.getItem("applications");
+  initial = stored ? JSON.parse(stored) : [];
+}
 
 export const applications = writable<Application[]>(initial);
 
 applications.subscribe((value) => {
-  if (typeof localStorage !== "undefined") {
-    localStorage.setItem("applications", JSON.stringify(value));
-  }
+  if (!browser) return;
+
+  localStorage.setItem("applications", JSON.stringify(value));
 });

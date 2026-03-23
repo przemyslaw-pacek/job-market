@@ -1,15 +1,18 @@
 <script lang="ts">
   import { currentUser, type User } from "$lib/stores/user";
   import { goto } from "$app/navigation";
+  import { browser } from "$app/environment";
 
   let email = "";
 
   function login() {
     if (!email) return;
 
-    const existingUsers: User[] = JSON.parse(
-      localStorage.getItem("users") || "[]",
-    );
+    let existingUsers: User[] = [];
+
+    if (browser) {
+      existingUsers = JSON.parse(localStorage.getItem("users") || "[]");
+    }
 
     let user = existingUsers.find((u: User) => u.email === email);
 
@@ -19,7 +22,9 @@
         email,
       };
 
-      localStorage.setItem("users", JSON.stringify([...existingUsers, user]));
+      if (browser) {
+        localStorage.setItem("users", JSON.stringify([...existingUsers, user]));
+      }
     }
 
     currentUser.set(user);

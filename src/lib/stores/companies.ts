@@ -1,4 +1,5 @@
 import { writable, type Writable } from "svelte/store";
+import { browser } from "$app/environment";
 
 export interface Branch {
   id: string;
@@ -15,30 +16,34 @@ export interface Company {
   ownerId: string;
 }
 
-function createcompaniestore(): Writable<Company[]> {
-  const stored =
-    typeof localStorage !== "undefined"
-      ? localStorage.getItem("companies")
-      : null;
+function createCompanyStore(): Writable<Company[]> {
+  let initial: Company[] = [];
 
-  const initial: Company[] = stored ? JSON.parse(stored) : [];
+  if (browser) {
+    const stored = localStorage.getItem("companies");
+    initial = stored ? JSON.parse(stored) : [];
+  }
 
   const { subscribe, set, update } = writable<Company[]>(initial);
 
   return {
     subscribe,
     set: (value: Company[]) => {
-      localStorage.setItem("companies", JSON.stringify(value));
+      if (browser) {
+        localStorage.setItem("companies", JSON.stringify(value));
+      }
       set(value);
     },
     update: (updater: (current: Company[]) => Company[]) => {
       update((current) => {
         const updated = updater(current);
-        localStorage.setItem("companies", JSON.stringify(updated));
+        if (browser) {
+          localStorage.setItem("companies", JSON.stringify(updated));
+        }
         return updated;
       });
     },
   };
 }
 
-export const companies = createcompaniestore();
+export const companies = createCompanyStore();
