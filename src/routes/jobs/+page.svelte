@@ -1,6 +1,7 @@
 <script lang="ts">
   import { jobs } from "$lib/stores/jobs";
   import { companies } from "$lib/stores/companies";
+  import { currentUser } from "$lib/stores/user";
 
   $: expandedJobs = $jobs.map((job) => {
     const company = $companies.find((c) => c.id === job.companyId);
@@ -117,7 +118,13 @@
 
   <div class="header">
     <h2>Job Offers</h2>
-    <a href="/post-job" class="button">+ Post a Job</a>
+    <a
+      href="/post-job"
+      class="button {!$currentUser ? 'disabled' : ''}"
+      on:click={(e) => {
+        if (!$currentUser) e.preventDefault();
+      }}>+ Post a Job</a
+    >
   </div>
 
   {#if $jobs.length === 0}
@@ -164,5 +171,10 @@
 
   .filters select {
     flex: 1;
+  }
+
+  .disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 </style>
