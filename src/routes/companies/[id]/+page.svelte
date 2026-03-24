@@ -8,22 +8,13 @@
 
   let company: Company | undefined;
 
-  $: {
-    const id = $page.params.id;
-    company = $companies.find((o) => o.id === id);
-  }
+  $: company = $companies.find((o) => o.id === $page.params.id);
 
   let companyJobs: Job[] = [];
 
-  $: {
-    if (company) {
-      const companyId = company.id;
-
-      companyJobs = $jobs.filter((job) => job.companyId === companyId);
-    } else {
-      companyJobs = [];
-    }
-  }
+  $: companyJobs = company
+    ? $jobs.filter((job) => job.companyId === company.id)
+    : [];
 
   $: isOwner = company?.ownerId === $currentUser?.id;
 
@@ -32,11 +23,11 @@
   let hrEmail = "";
 
   function addBranch() {
-    if (!company || !country || !city || !hrEmail) return;
+    if (!company || !country.trim() || !city.trim() || !hrEmail.trim()) return;
 
     companies.update((firms) =>
       firms.map((c) =>
-        c.id === company!.id
+        c.id === company.id
           ? {
               ...c,
               branches: [
@@ -61,10 +52,8 @@
   function canDeleteBranch(branchId: string): boolean {
     if (!company) return false;
 
-    const companyId = company.id;
-
     const isUsed = $jobs.some(
-      (job) => job.companyId === companyId && job.branchId === branchId,
+      (job) => job.companyId === company.id && job.branchId === branchId,
     );
 
     return !isUsed;
