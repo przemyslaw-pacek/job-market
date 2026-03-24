@@ -4,6 +4,7 @@
   import type { Company } from "$lib/stores/companies";
   import { jobs } from "$lib/stores/jobs";
   import type { Job } from "$lib/stores/jobs";
+  import { currentUser } from "$lib/stores/user";
 
   let company: Company | undefined;
 
@@ -24,6 +25,8 @@
     }
   }
 
+  $: isOwner = company?.ownerId === $currentUser?.id;
+
   let country = "";
   let city = "";
   let hrEmail = "";
@@ -32,12 +35,12 @@
     if (!company || !country || !city || !hrEmail) return;
 
     companies.update((firms) =>
-      firms.map((company) =>
-        company.id === company!.id
+      firms.map((c) =>
+        c.id === company!.id
           ? {
-              ...company,
+              ...c,
               branches: [
-                ...company.branches,
+                ...c.branches,
                 {
                   id: crypto.randomUUID(),
                   country,
@@ -46,13 +49,42 @@
                 },
               ],
             }
-          : company,
+          : c,
       ),
     );
 
     country = "";
     city = "";
     hrEmail = "";
+  }
+
+  function canDeleteBranch(branchId: string): boolean {
+    if (!company) return false;
+
+    const companyId = company.id;
+
+    const isUsed = $jobs.some(
+      (job) => job.companyId === companyId && job.branchId === branchId,
+    );
+
+    return !isUsed;
+  }
+
+  function removeBranch(branchId: string) {
+    if (!company || !isOwner) return;
+
+    const companyId = company.id;
+
+    companies.update((current) =>
+      current.map((c) => {
+        if (c.id !== companyId) return c;
+
+        return {
+          ...c,
+          branches: c.branches.filter((b) => b.id !== branchId),
+        };
+      }),
+    );
   }
 </script>
 
@@ -61,26 +93,28 @@
     <h2>{company.name}</h2>
 
     <div>
-      <a class="button" href={`/hr/${company.id}`}> Open HR Panel </a>
-      <form class="form" on:submit|preventDefault={addBranch}>
-        <input
-          class="input"
-          placeholder="Country"
-          bind:value={country}
-          required
-        />
+      {#if isOwner}
+        <a class="button" href={`/hr/${company.id}`}> Open HR Panel </a>
+        <form class="form" on:submit|preventDefault={addBranch}>
+          <input
+            class="input"
+            placeholder="Country"
+            bind:value={country}
+            required
+          />
 
-        <input class="input" placeholder="City" bind:value={city} required />
+          <input class="input" placeholder="City" bind:value={city} required />
 
-        <input
-          class="input"
-          placeholder="HR Email"
-          bind:value={hrEmail}
-          required
-        />
+          <input
+            class="input"
+            placeholder="HR Email"
+            bind:value={hrEmail}
+            required
+          />
 
-        <button class="button">Add Branch</button>
-      </form>
+          <button class="button">Add Branch</button>
+        </form>
+      {/if}
     </div>
 
     {#if company.description}
@@ -99,6 +133,21 @@
           <p><strong>Country:</strong> {branch.country}</p>
           <p><strong>City:</strong> {branch.city}</p>
           <p><strong>HR Email:</strong> {branch.hrEmail}</p>
+
+          {#if isOwner && company.branches.length > 1}
+            <div>
+              <button
+                class="button danger"
+                disabled={!canDeleteBranch(branch.id)}
+                title={!canDeleteBranch(branch.id)
+                  ? "Cannot delete branch with jobs"
+                  : undefined}
+                on:click={() => removeBranch(branch.id)}
+              >
+                Remove Branch
+              </button>
+            </div>
+          {/if}
         </div>
       {/each}
     {/if}
