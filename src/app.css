@@ -81,6 +81,14 @@ body {
   cursor: not-allowed;
 }
 
+.danger {
+  background: #d33;
+}
+
+.danger:hover {
+  opacity: 0.8;
+}
+
 .header {
   display: flex;
   flex-wrap: wrap;

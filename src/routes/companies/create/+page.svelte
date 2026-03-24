@@ -140,12 +140,4 @@
     font-size: 14px;
     margin-top: -6px;
   }
-
-  .danger {
-    background: #d33;
-  }
-
-  .danger:hover {
-    opacity: 0.8;
-  }
 </style>
