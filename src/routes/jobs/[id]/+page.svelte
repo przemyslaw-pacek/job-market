@@ -4,6 +4,7 @@
   import { companies } from "$lib/stores/companies";
   import { applications } from "$lib/stores/applications";
   import type { Job } from "$lib/stores/jobs";
+  import { currentUser } from "$lib/stores/user";
 
   let job: Job | undefined;
 
@@ -27,7 +28,12 @@
 
     applications.update((current) => [
       ...current,
-      { jobId: currentJob.id, appliedAt: Date.now(), status: "pending" },
+      {
+        jobId: currentJob.id,
+        appliedAt: Date.now(),
+        status: "pending",
+        userId: $currentUser?.id ?? "",
+      },
     ]);
   }
 
@@ -57,11 +63,7 @@
       </p>
     {/if}
 
-    <button
-      class="button"
-      on:click={apply}
-      disabled={isApplied}
-    >
+    <button class="button" on:click={apply} disabled={isApplied}>
       {isApplied ? "Already Applied" : "Apply Now"}
     </button>
   {:else}
