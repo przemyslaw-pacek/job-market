@@ -6,7 +6,8 @@
 
   let name = "";
   let description = "";
-  let error = "";
+  let success = false;
+
   let branches: Branch[] = [
     {
       id: crypto.randomUUID(),
@@ -29,115 +30,131 @@
   }
 
   function removeBranch(id: string) {
-    if (branches.length === 1) {
-      error = "At least one branch is required.";
-      return;
-    }
-
+    if (branches.length === 1) return;
     branches = branches.filter((b) => b.id !== id);
   }
 
-  function validateEmail(email: string) {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  }
-
   function saveCompany() {
-    error = "";
-
-    if (!name.trim()) {
-      error = "Company name is required.";
-      return;
-    }
-
-    if (branches.length === 0) {
-      error = "At least one branch is required.";
-      return;
-    }
-
-    for (const branch of branches) {
-      if (!branch.country.trim() || !branch.city.trim()) {
-        error = "Country and city are required for each branch.";
-        return;
-      }
-
-      if (!validateEmail(branch.hrEmail)) {
-        error = "Each branch must have a valid HR email.";
-        return;
-      }
-    }
-
     const user = $currentUser;
+    if (!user) return;
 
-    if (!user) {
-      error = "You must be logged in.";
-      return;
-    }
+    if (!name.trim()) return;
+
+    const hasInvalidBranch = branches.some(
+      (b) => !b.country.trim() || !b.city.trim() || !b.hrEmail.trim(),
+    );
+
+    if (hasInvalidBranch) return;
 
     const newCompany: Company = {
       id: crypto.randomUUID(),
-      name,
-      description,
-      branches,
+      name: name.trim(),
+      description: description.trim(),
+      branches: branches.map((b) => ({
+        ...b,
+        country: b.country.trim(),
+        city: b.city.trim(),
+        hrEmail: b.hrEmail.trim(),
+      })),
       ownerId: user.id,
     };
 
     companies.update((current) => [...current, newCompany]);
 
-    goto("/companies");
+    name = "";
+    description = "";
+    branches = [
+      {
+        id: crypto.randomUUID(),
+        country: "",
+        city: "",
+        hrEmail: "",
+      },
+    ];
+
+    success = true;
+
+    setTimeout(() => {
+      success = false;
+      goto("/companies");
+    }, 3000);
   }
 </script>
 
 <div class="container">
   <h2>Create Company</h2>
 
-  {#if error}
-    <p class="error">{error}</p>
-  {/if}
+  {#if !$currentUser}
+    <p>You must be logged in to create company.</p>
+    <a href="/login" class="button">Go to Login</a>
+  {:else}
+    <form on:submit|preventDefault={saveCompany}>
+      <div class="branch-card">
+        <input
+          class="input"
+          placeholder="Company Name"
+          bind:value={name}
+          required
+        />
 
-  <div class="branch-card">
-    <input class="input" placeholder="Company Name" bind:value={name} />
+        <textarea
+          class="input"
+          placeholder="Description"
+          bind:value={description}
+        ></textarea>
+      </div>
 
-    <textarea class="input" placeholder="Description" bind:value={description}
-    ></textarea>
-  </div>
+      <h3>HR Branches</h3>
 
-  <h3>HR Branches</h3>
+      {#each branches as branch (branch.id)}
+        <div class="branch-card">
+          <input
+            class="input"
+            placeholder="Country"
+            bind:value={branch.country}
+            required
+          />
 
-  {#each branches as branch (branch.id)}
-    <div class="branch-card">
-      <input class="input" placeholder="Country" bind:value={branch.country} />
+          <input
+            class="input"
+            placeholder="City"
+            bind:value={branch.city}
+            required
+          />
 
-      <input class="input" placeholder="City" bind:value={branch.city} />
+          <input
+            class="input"
+            type="email"
+            placeholder="HR Email"
+            bind:value={branch.hrEmail}
+            required
+          />
 
-      <input class="input" placeholder="HR Email" bind:value={branch.hrEmail} />
+          <div>
+            <button
+              type="button"
+              class="button danger"
+              on:click={() => removeBranch(branch.id)}
+            >
+              Remove Branch
+            </button>
+          </div>
+        </div>
+      {/each}
 
-      <div>
-        <button
-          type="button"
-          class="button danger"
-          on:click={() => removeBranch(branch.id)}
-        >
-          Remove Branch
+      <div class="buttons">
+        <button type="button" class="button" on:click={addBranch}>
+          + Add Branch
+        </button>
+
+        <button type="submit" class="button" disabled={!$currentUser}>
+          Save Company
         </button>
       </div>
-    </div>
-  {/each}
-
-  <div class="buttons">
-    <button type="button" class="button" on:click={addBranch}>
-      + Add Branch
-    </button>
-
-    <button type="button" class="button" on:click={saveCompany}>
-      Save Company
-    </button>
-  </div>
+    </form>
+  {/if}
 </div>
 
-<style>
-  .error {
-    color: red;
-    font-size: 14px;
-    margin-top: -6px;
-  }
-</style>
+{#if success}
+  <div class="success">Company created successfully!</div>
+{/if}

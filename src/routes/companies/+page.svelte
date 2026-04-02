@@ -1,11 +1,18 @@
 <script lang="ts">
   import { companies } from "$lib/stores/companies";
+  import { currentUser } from "$lib/stores/user";
 </script>
 
 <div class="container">
   <div class="header">
     <h2>Companies</h2>
-    <a href="/companies/create" class="button">Create Company</a>
+    <a
+      href="/companies/create"
+      class="button {!$currentUser ? 'disabled' : ''}"
+      on:click={(e) => {
+        if (!$currentUser) e.preventDefault();
+      }}>Create Company</a
+    >
   </div>
 
   {#if $companies.length === 0}
