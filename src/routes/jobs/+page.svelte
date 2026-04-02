@@ -172,9 +172,4 @@
   .filters select {
     flex: 1;
   }
-
-  .disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
 </style>

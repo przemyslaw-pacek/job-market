@@ -186,6 +186,24 @@ textarea.input {
   gap: 10px;
 }
 
+.success {
+  position: fixed;
+  left: 50%;
+  top: 70px;
+  transform: translateX(-50%);
+  border-radius: 10px;
+  background: lightgreen;
+  margin: auto;
+  padding: 12px 20px;
+  font-size: large;
+  font-weight: bold;
+}
+
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .status {
   padding: 4px 8px;
   border-radius: 6px;

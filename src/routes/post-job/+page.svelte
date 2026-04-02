@@ -144,16 +144,4 @@
     grid-template-columns: auto;
     gap: 12px;
   }
-  .success {
-    position: fixed;
-    left: 50%;
-    top: 70px;
-    transform: translateX(-50%);
-    border-radius: 10px;
-    background: lightgreen;
-    margin: auto;
-    padding: 12px 20px;
-    font-size: large;
-    font-weight: bold;
-  }
 </style>
