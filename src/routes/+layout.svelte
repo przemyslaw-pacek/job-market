@@ -26,7 +26,7 @@
 
       {#if $currentUser}
         <span class="login">{$currentUser.email}</span>
-        <button class="logout" on:click={() => currentUser.set(null)}>
+        <button class="logout" onclick={() => currentUser.set(null)}>
           Logout
         </button>
       {:else}

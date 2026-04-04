@@ -15,8 +15,18 @@
       if (!job) return null;
 
       const company = $companies.find((c) => c.id === job.companyId);
+      if (!company) return null;
 
-      if (!job || job.ownerId !== $currentUser?.id) {
+      const branch = company.branches.find((b) => b.id === job.branchId);
+      if (!branch) return null;
+
+      const isOwner = job.ownerId === $currentUser?.id;
+
+      const isHR =
+        branch.hrEmail.toLowerCase().trim() ===
+        $currentUser?.email?.toLowerCase().trim();
+
+      if (!isOwner && !isHR) {
         return null;
       }
 
@@ -24,7 +34,7 @@
         ...app,
         jobTitle: job.title,
         companyName: company?.name ?? "Unknown",
-        isOwner: company?.ownerId === $currentUser?.id,
+        isOwner: isOwner || isHR,
       };
     })
     .filter(isNotNull);
@@ -33,7 +43,16 @@
     const job = $jobs.find((j) => j.id === jobId);
     if (!job) return;
 
-    if (job.ownerId !== $currentUser?.id) {
+    const company = $companies.find((c) => c.id === job.companyId);
+    const branch = company?.branches.find((b) => b.id === job.branchId);
+
+    const isOwner = job.ownerId === $currentUser?.id;
+
+    const isHR =
+      branch?.hrEmail.toLowerCase().trim() ===
+      $currentUser?.email?.toLowerCase().trim();
+
+    if (!isOwner && !isHR) {
       return;
     }
 
