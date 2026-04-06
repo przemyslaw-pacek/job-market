@@ -26,6 +26,9 @@
 
     const currentJob = job;
 
+    const user = $currentUser;
+    if (!user) return;
+
     applications.update((current) => [
       ...current,
       {
@@ -33,11 +36,16 @@
         appliedAt: Date.now(),
         status: "pending",
         userId: $currentUser?.id ?? "",
+        userEmail: user.email,
       },
     ]);
   }
 
-  $: isApplied = job ? $applications.some((a) => a.jobId === job?.id) : false;
+  $: isApplied = job
+    ? $applications.some(
+        (a) => a.jobId === job?.id && a.userId === $currentUser?.id,
+      )
+    : false;
 </script>
 
 <div class="container">
@@ -51,7 +59,7 @@
 
     <p>
       <strong>Location:</strong>
-      {branch ? `${branch.country} — ${branch.city}` : "Unknown"}
+      {branch ? `${branch.country} - ${branch.city}` : "Unknown"}
     </p>
 
     <p><strong>Salary:</strong> {job.salary}</p>
@@ -63,7 +71,11 @@
       </p>
     {/if}
 
-    <button class="button" on:click={apply} disabled={isApplied}>
+    <button
+      class="button"
+      on:click={apply}
+      disabled={!$currentUser || isApplied}
+    >
       {isApplied ? "Already Applied" : "Apply Now"}
     </button>
   {:else}
