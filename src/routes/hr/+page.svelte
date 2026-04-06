@@ -3,7 +3,10 @@
   import { jobs } from "$lib/stores/jobs";
   import { companies } from "$lib/stores/companies";
   import { currentUser } from "$lib/stores/user";
-  import type { ApplicationStatus } from "$lib/stores/applications";
+  import type {
+    Application,
+    ApplicationStatus,
+  } from "$lib/stores/applications";
 
   function isNotNull<T>(value: T | null): value is T {
     return value !== null;
@@ -39,8 +42,11 @@
     })
     .filter(isNotNull);
 
-  function updateStatus(jobId: number, newStatus: ApplicationStatus) {
-    const job = $jobs.find((j) => j.id === jobId);
+  function updateStatus(
+    appToUpdate: Application,
+    newStatus: ApplicationStatus,
+  ) {
+    const job = $jobs.find((j) => j.id === appToUpdate.jobId);
     if (!job) return;
 
     const company = $companies.find((c) => c.id === job.companyId);
@@ -58,7 +64,9 @@
 
     applications.update((current) =>
       current.map((app) =>
-        app.jobId === jobId ? { ...app, status: newStatus } : app,
+        app.jobId === appToUpdate.jobId && app.userId === appToUpdate.userId
+          ? { ...app, status: newStatus }
+          : app,
       ),
     );
   }
@@ -84,7 +92,8 @@
 
         <p>
           <strong>Applied at:</strong>
-          {new Date(app.appliedAt).toLocaleString()}
+          {new Date(app.appliedAt).toLocaleString()} by
+          <strong>{app.userEmail}</strong>
         </p>
 
         <p>
@@ -98,7 +107,7 @@
           <button
             class="button"
             disabled={!app.isOwner}
-            on:click={() => updateStatus(app.jobId, "reviewed")}
+            on:click={() => updateStatus(app, "reviewed")}
           >
             Reviewed
           </button>
@@ -106,7 +115,7 @@
           <button
             class="button"
             disabled={!app.isOwner}
-            on:click={() => updateStatus(app.jobId, "accepted")}
+            on:click={() => updateStatus(app, "accepted")}
           >
             Accept
           </button>
@@ -114,7 +123,7 @@
           <button
             class="button"
             disabled={!app.isOwner}
-            on:click={() => updateStatus(app.jobId, "rejected")}
+            on:click={() => updateStatus(app, "rejected")}
           >
             Reject
           </button>

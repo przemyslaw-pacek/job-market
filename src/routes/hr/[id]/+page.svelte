@@ -4,7 +4,10 @@
   import { jobs } from "$lib/stores/jobs";
   import { companies } from "$lib/stores/companies";
   import type { Company } from "$lib/stores/companies";
-  import type { ApplicationStatus } from "$lib/stores/applications";
+  import type {
+    Application,
+    ApplicationStatus,
+  } from "$lib/stores/applications";
 
   let company: Company | undefined;
 
@@ -13,10 +16,15 @@
     company = $companies.find((o) => o.id === id);
   }
 
-  function updateStatus(jobId: number, newStatus: ApplicationStatus) {
+  function updateStatus(
+    appToUpdate: Application,
+    newStatus: ApplicationStatus,
+  ) {
     applications.update((current) =>
       current.map((app) =>
-        app.jobId === jobId ? { ...app, status: newStatus } : app,
+        app.jobId === appToUpdate.jobId && app.userId === appToUpdate.userId
+          ? { ...app, status: newStatus }
+          : app,
       ),
     );
   }
@@ -26,6 +34,7 @@
     appliedAt: number;
     status: ApplicationStatus;
     jobTitle: string;
+    userEmail: string;
   }[] = [];
 
   $: {
@@ -52,7 +61,7 @@
 
 <div class="container">
   {#if company}
-    <h2>HR Panel — {company.name}</h2>
+    <h2>HR Panel - {company.name}</h2>
 
     {#if companyApplications.length === 0}
       <p>No applications for this company yet.</p>
@@ -70,27 +79,28 @@
 
           <p>
             <strong>Applied at:</strong>
-            {new Date(app.appliedAt).toLocaleString()}
+            {new Date(app.appliedAt).toLocaleString()} by
+            <strong>{app.userEmail}</strong>
           </p>
 
           <div class="buttons">
             <button
               class="button"
-              on:click={() => updateStatus(app.jobId, "reviewed")}
+              on:click={() => updateStatus(app, "reviewed")}
             >
               Reviewed
             </button>
 
             <button
               class="button"
-              on:click={() => updateStatus(app.jobId, "accepted")}
+              on:click={() => updateStatus(app, "accepted")}
             >
               Accept
             </button>
 
             <button
               class="button"
-              on:click={() => updateStatus(app.jobId, "rejected")}
+              on:click={() => updateStatus(app, "rejected")}
             >
               Reject
             </button>

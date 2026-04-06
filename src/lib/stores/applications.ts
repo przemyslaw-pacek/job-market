@@ -12,6 +12,7 @@ export interface Application {
   appliedAt: number;
   status: ApplicationStatus;
   userId: string;
+  userEmail: string;
 }
 
 let initial: Application[] = [];
