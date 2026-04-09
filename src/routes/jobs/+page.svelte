@@ -66,7 +66,7 @@
 </script>
 
 <div class="container">
-  <div class="filters">
+  <div class="cells">
     <input
       class="input"
       placeholder="🔍 Search jobs, companies..."
@@ -156,20 +156,3 @@
     </div>
   {/each}
 </div>
-
-<style>
-  .filters {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 12px;
-  }
-
-  .filters input {
-    flex: 2;
-  }
-
-  .filters select {
-    flex: 1;
-  }
-</style>
