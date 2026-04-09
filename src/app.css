@@ -245,3 +245,18 @@ textarea.input {
 .logout:hover {
   opacity: 0.6;
 }
+
+.cells {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.cells input {
+  flex: 2;
+}
+
+.cells select {
+  flex: 1;
+}
