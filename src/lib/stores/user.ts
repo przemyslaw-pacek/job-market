@@ -4,23 +4,32 @@ import { browser } from "$app/environment";
 export interface User {
   id: string;
   email: string;
+  password: string;
+  firstName?: string;
+  lastName?: string;
+  address?: string;
 }
 
-let initial: User | null = null;
+function createUserStore() {
+  const stored = browser ? localStorage.getItem("currentUser") : null;
 
-if (browser) {
-  const stored = localStorage.getItem("user");
-  initial = stored ? JSON.parse(stored) : null;
+  const initial: User | null = stored ? JSON.parse(stored) : null;
+
+  const { subscribe, set } = writable<User | null>(initial);
+
+  return {
+    subscribe,
+    set: (user: User | null) => {
+      if (browser) {
+        if (user) {
+          localStorage.setItem("currentUser", JSON.stringify(user));
+        } else {
+          localStorage.removeItem("currentUser");
+        }
+      }
+      set(user);
+    },
+  };
 }
 
-export const currentUser = writable<User | null>(initial);
-
-currentUser.subscribe((value) => {
-  if (!browser) return;
-
-  if (value) {
-    localStorage.setItem("user", JSON.stringify(value));
-  } else {
-    localStorage.removeItem("user");
-  }
-});
+export const currentUser = createUserStore();
