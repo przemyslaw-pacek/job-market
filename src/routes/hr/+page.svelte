@@ -37,6 +37,9 @@
         ...app,
         jobTitle: job.title,
         companyName: company?.name ?? "Unknown",
+        branchLocation: branch
+          ? `${branch.city}, ${branch.country}`
+          : "Unknown",
         isOwner: isOwner || isHR,
       };
     })
@@ -88,6 +91,11 @@
         <p>
           <strong>Company:</strong>
           {app.companyName}
+        </p>
+
+        <p>
+          <strong>Location:</strong>
+          {app.branchLocation}
         </p>
 
         <p>

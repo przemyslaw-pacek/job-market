@@ -121,7 +121,7 @@
           <option value="">Select branch</option>
           {#each availableBranches as branch}
             <option value={branch.id}>
-              {branch.country} — {branch.city}
+              {branch.country} - {branch.city}
             </option>
           {/each}
         </select>
