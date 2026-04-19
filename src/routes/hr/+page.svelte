@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { applications } from "$lib/stores/applications";
+  import {
+    applications,
+    type Application,
+    type ApplicationStatus,
+  } from "$lib/stores/applications";
   import { jobs } from "$lib/stores/jobs";
   import { companies } from "$lib/stores/companies";
   import { currentUser } from "$lib/stores/user";
-  import type {
-    Application,
-    ApplicationStatus,
-  } from "$lib/stores/applications";
 
   function isNotNull<T>(value: T | null): value is T {
     return value !== null;

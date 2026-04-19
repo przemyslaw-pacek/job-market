@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { companies } from "$lib/stores/companies";
-  import type { Company, Branch } from "$lib/stores/companies";
+  import { companies, type Company, type Branch } from "$lib/stores/companies";
   import { goto } from "$app/navigation";
   import { currentUser } from "$lib/stores/user";
 

@@ -1,13 +1,12 @@
 <script lang="ts">
   import { page } from "$app/stores";
-  import { applications } from "$lib/stores/applications";
-  import { jobs } from "$lib/stores/jobs";
-  import { companies } from "$lib/stores/companies";
-  import type { Company } from "$lib/stores/companies";
-  import type {
-    Application,
-    ApplicationStatus,
+  import {
+    applications,
+    type Application,
+    type ApplicationStatus,
   } from "$lib/stores/applications";
+  import { jobs } from "$lib/stores/jobs";
+  import { companies, type Company } from "$lib/stores/companies";
 
   let company: Company | undefined;
 

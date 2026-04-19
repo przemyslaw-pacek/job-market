@@ -9,7 +9,6 @@
   }
 
   $: userApplications = $applications
-
     .filter((app) => app.userId === $currentUser?.id || !app.userId)
     .map((app) => {
       const job = $jobs.find((j) => j.id === app.jobId);
