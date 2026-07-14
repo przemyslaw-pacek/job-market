@@ -2,6 +2,7 @@
   import { jobs, type Job } from "$lib/stores/jobs";
   import { companies } from "$lib/stores/companies";
   import { currentUser } from "$lib/stores/user";
+  import { base } from "$app/paths";
 
   let title = "";
   let salary = "";
@@ -77,7 +78,7 @@
 
   {#if availableCompanies.length === 0}
     <p>You don't have access to any companies.</p>
-    <a href="/companies/create" class="button">Create Company</a>
+    <a href="{base}/companies/create" class="button">Create Company</a>
   {:else}
     <form on:submit|preventDefault={submitJob}>
       <div class="field">

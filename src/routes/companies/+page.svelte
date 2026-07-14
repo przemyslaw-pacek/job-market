@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from "$app/paths";
   import { companies } from "$lib/stores/companies";
   import { currentUser } from "$lib/stores/user";
 </script>
@@ -7,7 +8,7 @@
   <div class="header">
     <h2>Companies</h2>
     <a
-      href="/companies/create"
+      href="{base}/companies/create"
       class="button {!$currentUser ? 'disabled' : ''}"
       on:click={(e) => {
         if (!$currentUser) e.preventDefault();
@@ -21,7 +22,7 @@
     <ul>
       {#each $companies as company}
         <li class="company-card">
-          <a href={`/companies/${company.id}`}>
+          <a href={`${base}/companies/${company.id}`}>
             <strong>{company.name}</strong>
             <p>{company.branches.length} branch(es)</p>
           </a>

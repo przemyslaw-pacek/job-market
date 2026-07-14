@@ -2,6 +2,7 @@
   import { companies, type Company, type Branch } from "$lib/stores/companies";
   import { goto } from "$app/navigation";
   import { currentUser } from "$lib/stores/user";
+  import { base } from "$app/paths";
 
   let name = "";
   let description = "";
@@ -85,7 +86,7 @@
 
   {#if !$currentUser}
     <p>You must be logged in to create company.</p>
-    <a href="/login" class="button">Go to Login</a>
+    <a href="{base}/login" class="button">Go to Login</a>
   {:else}
     <form on:submit|preventDefault={saveCompany}>
       <div class="branch-card">

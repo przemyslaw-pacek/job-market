@@ -7,6 +7,7 @@
   import { jobs } from "$lib/stores/jobs";
   import { companies } from "$lib/stores/companies";
   import { currentUser } from "$lib/stores/user";
+  import { base } from "$app/paths";
 
   function isNotNull<T>(value: T | null): value is T {
     return value !== null;
@@ -80,7 +81,7 @@
 
   {#if !$currentUser}
     <p>You must be logged in to see applications.</p>
-    <a href="/login" class="button">Go to Login</a>
+    <a href="{base}/login" class="button">Go to Login</a>
   {:else if detailedApplications.length === 0}
     <p>No applications yet.</p>
   {:else}

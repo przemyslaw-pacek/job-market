@@ -3,6 +3,7 @@
   import { page } from "$app/stores";
   import { currentUser } from "$lib/stores/user";
   import "../app.css";
+  import { base } from "$app/paths";
 
   let { children } = $props();
 </script>
@@ -13,26 +14,26 @@
 
 <div>
   <nav class="navbar">
-    <div class="logo"><a href="/">JOB MARKETPLACE</a></div>
+    <div class="logo"><a href="{base}/">JOB MARKETPLACE</a></div>
 
     <div class="nav-links">
-      <a href="/" class:selected={$page.url.pathname === "/"}>Home</a>
-      <a href="/jobs" class:selected={$page.url.pathname.startsWith("/jobs")}
+      <a href="{base}/" class:selected={$page.url.pathname === "/"}>Home</a>
+      <a href="{base}/jobs" class:selected={$page.url.pathname.startsWith("/jobs")}
         >Job Offers</a
       >
       <a
-        href="/companies"
+        href="{base}/companies"
         class:selected={$page.url.pathname.startsWith("/companies")}
         >Companies</a
       >
 
       {#if $currentUser}
         <a
-          href="/applications"
+          href="{base}/applications"
           class:selected={$page.url.pathname.startsWith("/applications")}
           >My Applications</a
         >
-        <a href="/hr" class:selected={$page.url.pathname.startsWith("/hr")}
+        <a href="{base}/hr" class:selected={$page.url.pathname.startsWith("/hr")}
           >HR Panel</a
         >
       {/if}
@@ -44,7 +45,7 @@
         </button>
       {:else}
         <a
-          href="/login"
+          href="{base}/login"
           class:selected={$page.url.pathname.startsWith("/login")}>Login</a
         >
       {/if}

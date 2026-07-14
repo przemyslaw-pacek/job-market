@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { base } from "$app/paths";
   import { page } from "$app/stores";
   import { companies, type Company } from "$lib/stores/companies";
   import { jobs, type Job } from "$lib/stores/jobs";
@@ -81,7 +82,7 @@
 
     <div>
       {#if isOwner}
-        <a class="button" href={`/hr/${company.id}`}> Open HR Panel </a>
+        <a class="button" href={`${base}/hr/${company.id}`}> Open HR Panel </a>
         <form class="form" on:submit|preventDefault={addBranch}>
           <input
             class="input"
@@ -147,7 +148,7 @@
       {#each companyJobs as job}
         <div class="tile">
           <h4>
-            <a href={`/jobs/${job.id}`} class="job-link">
+            <a href={`${base}/jobs/${job.id}`} class="job-link">
               {job.title}
             </a>
           </h4>

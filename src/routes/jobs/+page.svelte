@@ -2,6 +2,7 @@
   import { jobs } from "$lib/stores/jobs";
   import { companies } from "$lib/stores/companies";
   import { currentUser } from "$lib/stores/user";
+  import { base } from "$app/paths";
 
   $: expandedJobs = $jobs.map((job) => {
     const company = $companies.find((c) => c.id === job.companyId);
@@ -119,7 +120,7 @@
   <div class="header">
     <h2>Job Offers</h2>
     <a
-      href="/post-job"
+      href="{base}/post-job"
       class="button {!$currentUser ? 'disabled' : ''}"
       on:click={(e) => {
         if (!$currentUser) e.preventDefault();
@@ -134,7 +135,7 @@
   {#each filteredJobs as job}
     <div class="tile">
       <h3>
-        <a href={`/jobs/${job.id}`} class="job-link">
+        <a href={`${base}/jobs/${job.id}`} class="job-link">
           {job.title}
         </a>
       </h3>
