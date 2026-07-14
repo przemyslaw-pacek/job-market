@@ -1,0 +1,1 @@
+import{w as c}from"./DxWwAYXx.js";function i(){let e=[];{const t=localStorage.getItem("companies");e=t?JSON.parse(t):[]}const{subscribe:s,set:a,update:r}=c(e);return{subscribe:s,set:t=>{localStorage.setItem("companies",JSON.stringify(t)),a(t)},update:t=>{r(n=>{const o=t(n);return localStorage.setItem("companies",JSON.stringify(o)),o})}}}const m=i();export{m as c};

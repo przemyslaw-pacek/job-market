@@ -1,0 +1,1 @@
+import{a as e,f as t}from"../chunks/DOkDzSjF.js";import"../chunks/DJJWyzVT.js";var r=t('<div class="container"><h1 class="svelte-1uha8ag">Welcome to Job Marketplace</h1></div>');function c(a){var o=r();e(a,o)}export{c as component};
