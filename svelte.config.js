@@ -17,7 +17,7 @@ const config = {
 		}),
 		paths: {
 			// Zastąp 'nazwa-repozytorium' dokładną nazwą swojego projektu na GitHubie
-			base: dev ? '' : '/job-market-2'
+			base: dev ? '' : '/job-market'
 		}
 	}
 };
