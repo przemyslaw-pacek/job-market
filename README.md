@@ -1,3 +1,50 @@
+# Job Marketplace
+
+Job Marketplace is a web application built with **SvelteKit** and **TypeScript** that connects job seekers with employers. It allows users to browse job offers, apply for positions, and manage applications, while HR users can create companies, manage branches, publish job offers, and review candidates.
+
+## Features
+
+### Authentication
+- User registration and login
+- Session stored in localStorage
+- Logout functionality
+
+### Companies
+- Create and manage companies
+- Add and remove company branches
+- Branch-specific HR email addresses
+- Company ownership management
+
+### Job Offers
+- Create job offers
+- Assign offers to companies and branches
+- Salary and job description support
+- Only authorized company owners or HR users can publish offers
+
+### Applications
+- Apply for job offers
+- Track application status
+- View personal application history
+- Multiple users can apply for the same job
+
+### HR Panel
+- Review applications for company job offers
+- Update application status (Pending, Reviewed, Accepted, Rejected)
+- View applicant information
+- Company-specific HR management
+
+## Technologies:
+
+- SvelteKit
+- TypeScript
+- Svelte Stores
+- LocalStorage
+- CSS
+
+## Purpose
+
+This project was created as a learning project to explore modern frontend development with SvelteKit while implementing features commonly found in real-world recruitment platforms.
+
 # sv
 
 Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
