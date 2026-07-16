@@ -1,5 +1,4 @@
 <script lang="ts">
-  import favicon from "$lib/assets/icon.svg";
   import { page } from "$app/stores";
   import { currentUser } from "$lib/stores/user";
   import "../app.css";
@@ -9,7 +8,7 @@
 </script>
 
 <svelte:head>
-  <link rel="icon" href={favicon} />
+  <title>Job Marketplace</title>
 </svelte:head>
 
 <div>
