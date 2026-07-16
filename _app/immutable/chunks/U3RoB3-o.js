@@ -1,0 +1,1 @@
+import{w as c}from"./B3PegSo8.js";function n(){const t=localStorage.getItem("currentUser"),r=t?JSON.parse(t):null,{subscribe:s,set:o}=c(r);return{subscribe:s,set:e=>{e?localStorage.setItem("currentUser",JSON.stringify(e)):localStorage.removeItem("currentUser"),o(e)}}}const l=n();export{l as c};

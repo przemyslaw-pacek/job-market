@@ -1,0 +1,1 @@
+import{w as i}from"./B3PegSo8.js";let a=[];{const t=localStorage.getItem("applications");a=t?JSON.parse(t):[]}const o=i(a);o.subscribe(t=>{localStorage.setItem("applications",JSON.stringify(t))});export{o as a};
