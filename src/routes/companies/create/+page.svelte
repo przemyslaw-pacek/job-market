@@ -76,7 +76,7 @@
 
     setTimeout(() => {
       success = false;
-      goto("/companies");
+      goto(`${base}/companies`);
     }, 3000);
   }
 </script>

@@ -2,6 +2,7 @@
   import { currentUser, type User } from "$lib/stores/user";
   import { goto } from "$app/navigation";
   import { browser } from "$app/environment";
+  import { base } from "$app/paths";
 
   let loginEmail = "";
   let loginPassword = "";
@@ -37,7 +38,7 @@
     }
 
     currentUser.set(user);
-    goto("/");
+    goto(`${base}/`);
   }
 
   function register(e: SubmitEvent) {
