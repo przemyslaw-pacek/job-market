@@ -11,9 +11,9 @@ const config = {
 		adapter: adapter({
 			pages: 'build',
 			assets: 'build',
-			fallback: '404.html', // Wymagane przez GitHub Pages dla tras SPA
+			fallback: undefined, // Wymagane przez GitHub Pages dla tras SPA
 			precompress: false,
-			strict: true
+			strict: false
 		}),
 		paths: {
 			// Zastąp 'nazwa-repozytorium' dokładną nazwą swojego projektu na GitHubie

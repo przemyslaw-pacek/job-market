@@ -4,6 +4,7 @@
   import { companies, type Company } from "$lib/stores/companies";
   import { jobs, type Job } from "$lib/stores/jobs";
   import { currentUser } from "$lib/stores/user";
+  export const prerender = false;
 
   let company: Company | undefined;
 

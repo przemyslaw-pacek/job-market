@@ -7,6 +7,7 @@
   } from "$lib/stores/applications";
   import { jobs } from "$lib/stores/jobs";
   import { companies, type Company } from "$lib/stores/companies";
+  export const prerender = false;
 
   let company: Company | undefined;
 
