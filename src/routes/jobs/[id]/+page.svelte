@@ -4,7 +4,6 @@
   import { companies } from "$lib/stores/companies";
   import { applications } from "$lib/stores/applications";
   import { currentUser } from "$lib/stores/user";
-  export const prerender = false;
 
   let job: Job | undefined;
 
