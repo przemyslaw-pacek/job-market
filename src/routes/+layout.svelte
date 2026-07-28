@@ -22,7 +22,7 @@
       >
       <a
         href="{base}/companies"
-        class:selected={$page.url.pathname.startsWith(`${base}/companie`)}
+        class:selected={$page.url.pathname.startsWith(`${base}/companies`)}
         >Companies</a
       >
 

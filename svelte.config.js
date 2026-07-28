@@ -11,13 +11,10 @@ const config = {
 		adapter: adapter({
 			pages: 'build',
 			assets: 'build',
-			fallback: undefined, // Wymagane przez GitHub Pages dla tras SPA
+			fallback: '404.html', // Wymagane przez GitHub Pages dla tras SPA
 			precompress: false,
-			strict: false
+			strict: true
 		}),
-		prerender: {
-			handleUnseenRoutes: 'ignore'
-		},
 		paths: {
 			// Zastąp 'nazwa-repozytorium' dokładną nazwą swojego projektu na GitHubie
 			base: dev ? '' : '/job-market'
