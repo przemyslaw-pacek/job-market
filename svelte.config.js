@@ -15,6 +15,9 @@ const config = {
 			precompress: false,
 			strict: false
 		}),
+		prerender: {
+			handleUnseenRoutes: 'ignore'
+		},
 		paths: {
 			// Zastąp 'nazwa-repozytorium' dokładną nazwą swojego projektu na GitHubie
 			base: dev ? '' : '/job-market'
